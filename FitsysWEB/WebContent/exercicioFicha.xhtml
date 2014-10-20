@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+
+<h:head>
+	<title>Gerenciador de ExercicioFichas</title>
+	<link type="text/css" rel="stylesheet" href="dot-luv/skin.css" />
+</h:head>
+<h:body>
+
+	<p:fieldset legend="Gerenciar ExercicioFicha" toggleable="true"
+		toggleSpeed="500">
+		<h:form id="form">
+			<center>
+				<p:dataTable id="tabela" var="exercicioFicha"
+					value="#{exercicioFichaPrime.allExercicioFicha}" rowKey="#{exercicioFicha.id}"
+					selectionMode="single" scrollable="true" scrollHeight="300"
+					scrollWidth="850" selection="#{exercicioFichaPrime.exercicioFichaSelecionado}">
+					<p:column headerText="Codigo" width="150">
+						<h:outputText value="#{exercicioFicha.id}" />
+					</p:column>
+
+					<p:column headerText="Intensidade">
+						<h:outputText value="#{exercicioFicha.intensidade}" />
+					</p:column>
+
+					<p:column headerText="Exercicio">
+						<h:outputText value="#{exercicioFicha.exercicio.nome}" />
+					</p:column>
+
+					<p:column headerText="Ficha">
+						<h:outputText value="#{exercicioFicha.ficha.id}" />
+					</p:column>
+
+				</p:dataTable>
+			</center>
+		</h:form>
+		<center>
+			<p:commandButton value="Cadastrar" icon="ui-icon-document"
+				update=":fexercicioFicha:displayCadastro" oncomplete="cadastro.show()" />
+
+			<p:commandButton value="Alterar" icon="ui-icon-search"
+				oncomplete="altera.show()" update=":fexercicioFichaA:displayaltera" />
+
+			<p:commandButton value="Deletar" icon="ui-icon-disk"
+				oncomplete="deleta.show()" update=":displaydeleta" />
+
+
+
+		</center>
+	</p:fieldset>
+
+	<p:growl id="menssagem" showDetail="true" life="3000" for="msg" />
+
+	<!--............................................................................DIALOGOS E FUNÇÕES-->
+	<!--CADASTRO ExercicioFicha-->
+	<p:dialog id="dialogCadastro" header="Cadastro de ExercicioFicha"
+		widgetVar="cadastro" resizable="false" width="500" showEffect="clip"
+		hideEffect="explode">
+		<h:form id="fexercicioFicha">
+			<h:panelGrid id="displayCadastro" border='1' columns="2"
+				styleClass="panelGrid" rowClasses="panelFirstLine,panelNextLine">
+				<h:outputLabel value="Codigo" />
+				<p:inputText value="#{exercicioFichaPrime.exercicioFicha.id}"
+					style=" width : 125px;" />
+
+				<h:outputLabel value="Intensidade" />
+				<p:inputText value="#{exercicioFichaPrime.exercicioFicha.intensidade}"
+					style=" width : 225px;" />
+
+
+				<h:outputLabel value="Exercicio" />
+				<p:selectOneMenu id="exercicio"
+					value="#{exercicioFichaPrime.exercicioFicha.exercicio}"
+					converter="entityConverter" effect="fade" var="i" filter="true" style="width:260px" panelStyle="width:250px"
+					filterMatchMode="startsWith">
+					<f:selectItem itemValue="" itemLabel="Selecione Exercicio" />
+					<f:selectItems value="#{exercicioFichaPrime.allExercicio}" var="exercicio"
+						itemLabel="#{exercicio.nome}" itemValue="#{exercicio}" />
+						<p:column>
+						   #{i.id} - #{i.nome}
+						</p:column>
+				</p:selectOneMenu>
+
+				<h:outputLabel value="Ficha" />
+				<p:selectOneMenu id="ficha"
+					value="#{exercicioFichaPrime.exercicioFicha.ficha}"
+					converter="entityConverter" effect="fade" var="i" filter="true" style="width:260px" panelStyle="width:250px"
+					filterMatchMode="startsWith">
+					<f:selectItem itemValue="" itemLabel="Selecione Ficha" />
+					<f:selectItems value="#{exercicioFichaPrime.allFicha}" var="ficha"
+						itemLabel="#{ficha.objetivo}" itemValue="#{ficha}" />
+						<p:column>
+						   #{i.id} - #{i.objetivo}
+						</p:column>
+				</p:selectOneMenu>
+
+				<p:commandButton value="Cadastrar" icon="ui-icon-search"
+					action="#{exercicioFichaPrime.salva()}"
+					update=":form:tabela,:menssagem" />
+
+			</h:panelGrid>
+			<br />
+		</h:form>
+	</p:dialog>
+	<script type="text/javascript">
+           function camposObrigatorios() {
+               jQuery('#form2').effect("shake", { times:3 }, 100);
+           }
+      </script>
+
+	<!-- Altera -->
+
+	<p:dialog id="dialogaltera" header="Altera" widgetVar="altera"
+		resizable="false" width="500" showEffect="clip" hideEffect="explode">
+		<h:form id="fexercicioFichaA">
+			<h:panelGrid id="displayaltera" border='1' columns="2"
+				styleClass="panelGrid" rowClasses="panelFirstLine,panelNextLine">
+				<h:outputLabel value="Codigo" />
+				<p:outputLabel value="#{exercicioFichaPrime.exercicioFichaSelecionado.id}"
+					style=" width : 325px;" />
+
+				<h:outputLabel value="Intensidade" />
+				<p:inputText value="#{exercicioFichaPrime.exercicioFichaSelecionado.intensidade}"
+					style=" width : 325px;" />
+
+					
+			    <h:outputLabel value="Exercicio" />
+				<p:selectOneMenu id="exercicio"
+					value="#{exercicioFichaPrime.exercicioFicha.exercicio}"
+					converter="entityConverter" effect="fade" var="i" filter="true" style="width:260px" panelStyle="width:250px"
+					filterMatchMode="startsWith">
+					<f:selectItem itemValue="" itemLabel="Selecione Exercicio" />
+					<f:selectItems value="#{exercicioFichaPrime.allExercicio}" var="exercicio"
+						itemLabel="#{exercicio.nome}" itemValue="#{exercicio}" />
+						<p:column>
+						   #{i.id} - #{i.nome}
+						</p:column>
+				</p:selectOneMenu> 		
+
+				<h:outputLabel value="Ficha" />
+				<p:selectOneMenu id="ficha"
+					value="#{exercicioFichaPrime.exercicioFicha.ficha}"
+					converter="entityConverter" effect="fade" var="i" filter="true" style="width:260px" panelStyle="width:250px"
+					filterMatchMode="startsWith">
+					<f:selectItem itemValue="" itemLabel="Selecione Ficha" />
+					<f:selectItems value="#{exercicioFichaPrime.allFicha}" var="ficha"
+						itemLabel="#{ficha.objetivo}" itemValue="#{ficha}" />
+						<p:column>
+						   #{i.id} - #{i.objetivo}
+						</p:column>
+				</p:selectOneMenu> 		
+
+
+				<p:commandButton value="Alterar" icon="ui-icon-search"
+					action="#{exercicioFichaPrime.update()}"
+					update=":form:tabela,:menssagem" />
+
+
+
+
+			</h:panelGrid>
+			<br />
+		</h:form>
+	</p:dialog>
+
+
+
+	<!--DELEÇÂO DE CONTATO-->
+	<p:dialog id="dialogDeleta" header="Deletar ExercicioFicha" widgetVar="deleta"
+		width="500" showEffect="clip" hideEffect="fold">
+		<h:panelGrid id="displaydeleta" columns="2" cellpadding="4">
+			<h:outputText value="Deseja exluir realmente o ExercicioFicha?" />
+			<br />
+			<p:commandButton value="Sim" action="#{exercicioFichaPrime.delete()}"
+				update=":form:tabela,:menssagem" />
+			<p:commandButton value="Não" oncomplete="deleta.hide()"
+				update=":form:tabela,:menssagem" />
+		</h:panelGrid>
+	</p:dialog>
+
+
+</h:body>
+</html>

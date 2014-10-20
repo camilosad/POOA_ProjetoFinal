@@ -1,0 +1,250 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+
+<h:head>
+	<title>Gerenciador de Avaliacões Físicas</title>
+	<link type="text/css" rel="stylesheet" href="dot-luv/skin.css" />
+</h:head>
+<h:body>
+
+	<p:fieldset legend="Gerenciar AvaliacaoFisica" toggleable="true"
+		toggleSpeed="500">
+		<h:form id="form">
+			<center>
+				<p:dataTable id="tabela" var="avaliacaoFisica"
+					value="#{avaliacaoFisicaPrime.allAvaliacaoFisica}" rowKey="#{avaliacaoFisica.id}"
+					selectionMode="single" scrollable="true" scrollHeight="300"
+					scrollWidth="850" selection="#{avaliacaoFisicaPrime.avaliacaoFisicaSelecionado}">
+					<p:column headerText="Codigo" width="150">
+						<h:outputText value="#{avaliacaoFisica.id}" />
+					</p:column>
+
+					<p:column headerText="Aluno">
+						<h:outputText value="#{avaliacaoFisica.aluno.nome}" />
+					</p:column>
+
+					<p:column headerText="Professor">
+						<h:outputText value="#{avaliacaoFisica.professor.nome}" />
+					</p:column>
+
+					<p:column headerText="Perimetro">
+						<h:outputText value="#{avaliacaoFisica.perimetro.id}" />
+					</p:column>
+
+					<p:column headerText="Composição Corporal">
+						<h:outputText value="#{avaliacaoFisica.composicaoCorporal.id}" />
+					</p:column>
+
+					<p:column headerText="Data">
+						<h:outputText value="#{avaliacaoFisica.data}" />
+					</p:column>
+
+					<p:column headerText="Observações">
+						<h:outputText value="#{avaliacaoFisica.observacoes}" />
+					</p:column>
+
+				</p:dataTable>
+			</center>
+		</h:form>
+		<center>
+			<p:commandButton value="Cadastrar" icon="ui-icon-document"
+				update=":favaliacaoFisica:displayCadastro" oncomplete="cadastro.show()" />
+
+			<p:commandButton value="Alterar" icon="ui-icon-search"
+				oncomplete="altera.show()" update=":favaliacaoFisicaA:displayaltera" />
+
+			<p:commandButton value="Deletar" icon="ui-icon-disk"
+				oncomplete="deleta.show()" update=":displaydeleta" />
+
+
+
+		</center>
+	</p:fieldset>
+
+	<p:growl id="menssagem" showDetail="true" life="3000" for="msg" />
+
+	<!--............................................................................DIALOGOS E FUNÇÕES-->
+	<!--CADASTRO AvaliacaoFisica-->
+	<p:dialog id="dialogCadastro" header="Cadastro de AvaliacaoFisica"
+		widgetVar="cadastro" resizable="false" width="500" showEffect="clip"
+		hideEffect="explode">
+		<h:form id="favaliacaoFisica">
+			<h:panelGrid id="displayCadastro" border='1' columns="2"
+				styleClass="panelGrid" rowClasses="panelFirstLine,panelNextLine">
+				<h:outputLabel value="Codigo" />
+				<p:inputText value="#{avaliacaoFisicaPrime.avaliacaoFisica.id}"
+					style=" width : 125px;" />
+
+				<h:outputLabel value="Data" />
+				<p:inputText value="#{avaliacaoFisicaPrime.avaliacaoFisica.data}"
+					style=" width : 225px;" />
+
+				<h:outputLabel value="Observações" />
+				<p:inputText value="#{avaliacaoFisicaPrime.avaliacaoFisica.observacoes}"
+					style=" width : 225px;" />
+
+				<h:outputLabel value="Aluno" />
+				<p:selectOneMenu id="aluno"
+					value="#{avaliacaoFisicaPrime.avaliacaoFisica.aluno}"
+					converter="entityConverter" effect="fade" var="i" filter="true" style="width:260px" panelStyle="width:250px"
+					filterMatchMode="startsWith">
+					<f:selectItem itemValue="" itemLabel="Selecione Aluno" />
+					<f:selectItems value="#{avaliacaoFisicaPrime.allAluno}" var="aluno"
+						itemLabel="#{aluno.nome}" itemValue="#{aluno}" />
+						<p:column>
+						   #{i.id} - #{i.nome}
+						</p:column>
+				</p:selectOneMenu>
+
+				<h:outputLabel value="Professor" />
+				<p:selectOneMenu id="professor"
+					value="#{avaliacaoFisicaPrime.avaliacaoFisica.professor}"
+					converter="entityConverter" effect="fade" var="i" filter="true" style="width:260px" panelStyle="width:250px"
+					filterMatchMode="startsWith">
+					<f:selectItem itemValue="" itemLabel="Selecione Professor" />
+					<f:selectItems value="#{avaliacaoFisicaPrime.allProfessor}" var="professor"
+						itemLabel="#{professor.nome}" itemValue="#{professor}" />
+						<p:column>
+						   #{i.id} - #{i.nome}
+						</p:column>
+				</p:selectOneMenu>
+
+				<h:outputLabel value="Perimetro" />
+				<p:selectOneMenu id="perimetro"
+					value="#{avaliacaoFisicaPrime.avaliacaoFisica.perimetro}"
+					converter="entityConverter" effect="fade" var="i" filter="true" style="width:260px" panelStyle="width:250px"
+					filterMatchMode="startsWith">
+					<f:selectItem itemValue="" itemLabel="Selecione Perimetro" />
+					<f:selectItems value="#{avaliacaoFisicaPrime.allPerimetro}" var="perimetro"
+						itemLabel="#{perimetro.id}" itemValue="#{perimetro}" />
+						<p:column>
+						   #{i.id}
+						</p:column>
+				</p:selectOneMenu>
+
+				<h:outputLabel value="Composição Corporal" />
+				<p:selectOneMenu id="composicaoCorporal"
+					value="#{avaliacaoFisicaPrime.avaliacaoFisica.composicaoCorporal}"
+					converter="entityConverter" effect="fade" var="i" filter="true" style="width:260px" panelStyle="width:250px"
+					filterMatchMode="startsWith">
+					<f:selectItem itemValue="" itemLabel="Selecione ComposicaoCorporal" />
+					<f:selectItems value="#{avaliacaoFisicaPrime.allComposicaoCorporal}" var="composicaoCorporal"
+						itemLabel="#{composicaoCorporal.id}" itemValue="#{composicaoCorporal}" />
+						<p:column>
+						   #{i.id}
+						</p:column>
+				</p:selectOneMenu>
+
+				<p:commandButton value="Cadastrar" icon="ui-icon-search"
+					action="#{avaliacaoFisicaPrime.salva()}"
+					update=":form:tabela,:menssagem" />
+
+			</h:panelGrid>
+			<br />
+		</h:form>
+	</p:dialog>
+	<script type="text/javascript">
+           function camposObrigatorios() {
+               jQuery('#form2').effect("shake", { times:3 }, 100);
+           }
+      </script>
+
+	<!-- Altera -->
+
+	<p:dialog id="dialogaltera" header="Altera" widgetVar="altera"
+		resizable="false" width="500" showEffect="clip" hideEffect="explode">
+		<h:form id="favaliacaoFisicaA">
+			<h:panelGrid id="displayaltera" border='1' columns="2"
+				styleClass="panelGrid" rowClasses="panelFirstLine,panelNextLine">
+				<h:outputLabel value="Codigo" />
+				<p:outputLabel value="#{avaliacaoFisicaPrime.avaliacaoFisicaSelecionado.id}"
+					style=" width : 325px;" />
+
+					
+			    <h:outputLabel value="Aluno" />
+				<p:selectOneMenu id="aluno"
+					value="#{avaliacaoFisicaPrime.avaliacaoFisica.aluno}"
+					converter="entityConverter" effect="fade" var="i" filter="true" style="width:260px" panelStyle="width:250px"
+					filterMatchMode="startsWith">
+					<f:selectItem itemValue="" itemLabel="Selecione Aluno" />
+					<f:selectItems value="#{avaliacaoFisicaPrime.allAluno}" var="aluno"
+						itemLabel="#{aluno.nome}" itemValue="#{aluno}" />
+						<p:column>
+						   #{i.id} - #{i.nome}
+						</p:column>
+				</p:selectOneMenu> 		
+
+				<h:outputLabel value="Professor" />
+				<p:selectOneMenu id="professor"
+					value="#{avaliacaoFisicaPrime.avaliacaoFisica.professor}"
+					converter="entityConverter" effect="fade" var="i" filter="true" style="width:260px" panelStyle="width:250px"
+					filterMatchMode="startsWith">
+					<f:selectItem itemValue="" itemLabel="Selecione Professor" />
+					<f:selectItems value="#{avaliacaoFisicaPrime.allProfessor}" var="professor"
+						itemLabel="#{professor.nome}" itemValue="#{professor}" />
+						<p:column>
+						   #{i.id} - #{i.nome}
+						</p:column>
+				</p:selectOneMenu>
+
+				<h:outputLabel value="Perimetro" />
+				<p:selectOneMenu id="perimetro"
+					value="#{avaliacaoFisicaPrime.avaliacaoFisica.perimetro}"
+					converter="entityConverter" effect="fade" var="i" filter="true" style="width:260px" panelStyle="width:250px"
+					filterMatchMode="startsWith">
+					<f:selectItem itemValue="" itemLabel="Selecione Perimetro" />
+					<f:selectItems value="#{avaliacaoFisicaPrime.allPerimetro}" var="perimetro"
+						itemLabel="#{perimetro.id}" itemValue="#{perimetro}" />
+						<p:column>
+						   #{i.id}
+						</p:column>
+				</p:selectOneMenu>
+
+				<h:outputLabel value="Composição Corporal" />
+				<p:selectOneMenu id="composicaoCorporal"
+					value="#{avaliacaoFisicaPrime.avaliacaoFisica.composicaoCorporal}"
+					converter="entityConverter" effect="fade" var="i" filter="true" style="width:260px" panelStyle="width:250px"
+					filterMatchMode="startsWith">
+					<f:selectItem itemValue="" itemLabel="Selecione ComposicaoCorporal" />
+					<f:selectItems value="#{avaliacaoFisicaPrime.allComposicaoCorporal}" var="composicaoCorporal"
+						itemLabel="#{composicaoCorporal.id}" itemValue="#{composicaoCorporal}" />
+						<p:column>
+						   #{i.id}
+						</p:column>
+				</p:selectOneMenu>
+
+
+				<p:commandButton value="Alterar" icon="ui-icon-search"
+					action="#{avaliacaoFisicaPrime.update()}"
+					update=":form:tabela,:menssagem" />
+
+
+
+			</h:panelGrid>
+			<br />
+		</h:form>
+	</p:dialog>
+
+
+
+	<!--DELEÇÂO DE CONTATO-->
+	<p:dialog id="dialogDeleta" header="Deletar AvaliacaoFisica" widgetVar="deleta"
+		width="500" showEffect="clip" hideEffect="fold">
+		<h:panelGrid id="displaydeleta" columns="2" cellpadding="4">
+			<h:outputText value="Deseja exluir realmente o AvaliacaoFisica?" />
+			<br />
+			<p:commandButton value="Sim" action="#{avaliacaoFisicaPrime.delete()}"
+				update=":form:tabela,:menssagem" />
+			<p:commandButton value="Não" oncomplete="deleta.hide()"
+				update=":form:tabela,:menssagem" />
+		</h:panelGrid>
+	</p:dialog>
+
+
+</h:body>
+</html>

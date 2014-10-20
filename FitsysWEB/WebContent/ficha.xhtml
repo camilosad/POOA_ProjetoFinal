@@ -1,0 +1,217 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"> 
+
+
+<h:head>
+	<title>Gerenciador de Fichas</title>
+	<link type="text/css" rel="stylesheet" href="dot-luv/skin.css" />
+</h:head>
+<h:body>
+
+	<p:fieldset legend="Gerenciar Ficha" toggleable="true"
+		toggleSpeed="500">
+		<h:form id="form">
+			<center>
+				<p:dataTable id="tabela" var="ficha"
+					value="#{fichaPrime.allFicha}" rowKey="#{ficha.id}"
+					selectionMode="single" scrollable="true" scrollHeight="300"
+					scrollWidth="850" selection="#{fichaPrime.fichaSelecionado}">
+					<p:column headerText="Codigo" width="250">
+						<h:outputText value="#{ficha.id}" />
+					</p:column>
+					
+					<p:column headerText="Aluno">
+						<h:outputText value="#{ficha.aluno.nome}" />
+					</p:column>
+
+					<p:column headerText="Professor">
+						<h:outputText value="#{ficha.professor.nome}" />
+					</p:column>
+
+					<p:column headerText="Dia da semana">
+						<h:outputText value="#{ficha.diaDaSemana}" />
+					</p:column>
+
+					<p:column headerText="Objetivo">
+						<h:outputText value="#{ficha.objetivo}" />
+					</p:column>
+
+					<p:column headerText="Data de criação">
+						<h:outputText value="#{ficha.dataCriacao}" />
+					</p:column>
+
+					<p:column headerText="Data de validade">
+						<h:outputText value="#{ficha.dataValidade}" />
+					</p:column>
+
+				</p:dataTable>
+			</center>
+		</h:form>
+		<center>
+			<p:commandButton value="Cadastrar" icon="ui-icon-document"
+				update=":fficha:displayCadastro" oncomplete="cadastro.show()" />
+
+			<p:commandButton value="Alterar" icon="ui-icon-search"
+				oncomplete="altera.show()" update=":ffichaA:displayaltera" />
+
+			<p:commandButton value="Deletar" icon="ui-icon-disk"
+				oncomplete="deleta.show()" update=":displaydeleta" />
+
+
+
+		</center>
+	</p:fieldset>
+
+	<p:growl id="menssagem" showDetail="true" life="3000" for="msg" />
+
+	<!--............................................................................DIALOGOS E FUNÇÕES-->
+	<!--CADASTRO Ficha-->
+	<p:dialog id="dialogCadastro" header="Cadastro de Ficha"
+		widgetVar="cadastro" resizable="false" width="500" showEffect="clip"
+		hideEffect="explode">
+		<h:form id="fficha">
+			<h:panelGrid id="displayCadastro" border='1' columns="2"
+				styleClass="panelGrid" rowClasses="panelFirstLine,panelNextLine">
+				<h:outputLabel value="Codigo" />
+				<p:inputText value="#{fichaPrime.ficha.id}"
+					style=" width : 325px;" />
+					
+				<h:outputLabel value="Aluno" />
+				<p:selectOneMenu id="aluno"
+					value="#{fichaPrime.ficha.aluno}"
+					converter="entityConverter" effect="fade" var="i" filter="true" style="width:260px" panelStyle="width:250px"
+					filterMatchMode="startsWith">
+					<f:selectItem itemValue="" itemLabel="Selecione Aluno" />
+					<f:selectItems value="#{fichaPrime.allAluno}" var="aluno"
+						itemLabel="#{aluno.nome}" itemValue="#{aluno}" />
+						<p:column>
+						   #{i.id} - #{i.nome}
+						</p:column>
+				</p:selectOneMenu>
+
+				<h:outputLabel value="Professor" />
+				<p:selectOneMenu id="professor"
+					value="#{fichaPrime.ficha.professor}"
+					converter="entityConverter" effect="fade" var="i" filter="true" style="width:260px" panelStyle="width:250px"
+					filterMatchMode="startsWith">
+					<f:selectItem itemValue="" itemLabel="Selecione Professor" />
+					<f:selectItems value="#{fichaPrime.allProfessor}" var="professor"
+						itemLabel="#{professor.nome}" itemValue="#{professor}" />
+						<p:column>
+						   #{i.id} - #{i.nome}
+						</p:column>
+				</p:selectOneMenu>
+
+				<h:outputLabel value="Dia_da_semana" />
+				<p:inputText value="#{fichaPrime.ficha.diaDaSemana}"
+					style=" width : 325px;" />
+
+				<h:outputLabel value="Objetivo" />
+				<p:inputText value="#{fichaPrime.ficha.objetivo}"
+					style=" width : 325px;" />
+
+				<h:outputLabel value="Data_criação" />
+				<p:inputText value="#{fichaPrime.ficha.dataCriacao}"
+					style=" width : 325px;" />
+
+				<h:outputLabel value="Data_validade" />
+				<p:inputText value="#{fichaPrime.ficha.dataValidade}"
+					style=" width : 325px;" />
+
+				<p:commandButton value="Cadastrar" icon="ui-icon-search"
+					action="#{fichaPrime.salva()}"
+					update=":form:tabela,:menssagem" />
+
+			</h:panelGrid>
+			<br />
+		</h:form>
+	</p:dialog>
+	<script type="text/javascript">
+           function camposObrigatorios() {
+               jQuery('#form2').effect("shake", { times:3 }, 100);
+           }
+      </script>
+
+	<!-- Altera -->
+
+	<p:dialog id="dialogaltera" header="Altera" widgetVar="altera"
+		resizable="false" width="500" showEffect="clip" hideEffect="explode">
+		<h:form id="ffichaA">
+			<h:panelGrid id="displayaltera" border='1' columns="2"
+				styleClass="panelGrid" rowClasses="panelFirstLine,panelNextLine">
+				<h:outputLabel value="Codigo" />
+				<p:outputLabel value="#{fichaPrime.fichaSelecionado.id}"
+					style=" width : 325px;" />
+					
+				<h:outputLabel value="Aluno" />
+				<p:selectOneMenu id="aluno"
+					value="#{fichaPrime.ficha.aluno}"
+					converter="entityConverter" effect="fade" var="i" filter="true" style="width:260px" panelStyle="width:250px"
+					filterMatchMode="startsWith">
+					<f:selectItem itemValue="" itemLabel="Selecione Aluno" />
+					<f:selectItems value="#{fichaPrime.allAluno}" var="aluno"
+						itemLabel="#{aluno.nome}" itemValue="#{aluno}" />
+						<p:column>
+						   #{i.id} - #{i.nome}
+						</p:column>
+				</p:selectOneMenu> 		
+
+				<h:outputLabel value="Professor" />
+				<p:selectOneMenu id="professor"
+					value="#{fichaPrime.ficha.professor}"
+					converter="entityConverter" effect="fade" var="i" filter="true" style="width:260px" panelStyle="width:250px"
+					filterMatchMode="startsWith">
+					<f:selectItem itemValue="" itemLabel="Selecione Professor" />
+					<f:selectItems value="#{fichaPrime.allProfessor}" var="professor"
+						itemLabel="#{professor.nome}" itemValue="#{professor}" />
+						<p:column>
+						   #{i.id} - #{i.nome}
+						</p:column>
+				</p:selectOneMenu>
+					
+
+				<h:outputLabel value="Dia_da_semana" />
+				<p:inputText value="#{fichaPrime.fichaSelecionado.diaDaSemana}"
+					style=" width : 325px;" />
+
+				<h:outputLabel value="Data_criacao" />
+				<p:inputText value="#{fichaPrime.fichaSelecionado.dataCriacao}"
+					style=" width : 325px;" />
+
+				<h:outputLabel value="Data_validade" />
+				<p:inputText value="#{fichaPrime.fichaSelecionado.dataValidade}"
+					style=" width : 325px;" />
+
+
+				<p:commandButton value="Alterar" icon="ui-icon-search"
+					action="#{fichaPrime.update()}"
+					update=":form:tabela,:menssagem" />
+
+
+			</h:panelGrid>
+			<br />
+		</h:form>
+	</p:dialog>
+
+
+
+	<!--DELEÇÂO DE CONTATO-->
+	<p:dialog id="dialogDeleta" header="Deletar Ficha" widgetVar="deleta"
+		width="500" showEffect="clip" hideEffect="fold">
+		<h:panelGrid id="displaydeleta" columns="2" cellpadding="4">
+			<h:outputText value="Deseja exluir realmente o Ficha?" />
+			<br />
+			<p:commandButton value="Sim" action="#{fichaPrime.delete()}"
+				update=":form:tabela,:menssagem" />
+			<p:commandButton value="Não" oncomplete="deleta.hide()"
+				update=":form:tabela,:menssagem" />
+		</h:panelGrid>
+	</p:dialog>
+
+
+</h:body>
+</html>

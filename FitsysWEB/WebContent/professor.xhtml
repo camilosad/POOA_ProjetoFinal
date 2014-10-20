@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+
+<h:head>
+	<title>Gerenciador de Professores</title>
+	<link type="text/css" rel="stylesheet" href="dot-luv/skin.css" />
+</h:head>
+<h:body>
+
+	<p:fieldset legend="Gerenciar Professor" toggleable="true"
+		toggleSpeed="500">
+		<h:form id="form">
+			<center>
+				<p:dataTable id="tabela" var="professor"
+					value="#{professorPrime.allProfessor}" rowKey="#{professor.id}"
+					selectionMode="single" scrollable="true" scrollHeight="300"
+					scrollWidth="1150" selection="#{professorPrime.professorSelecionado}">
+					<p:column headerText="Codigo" width="100">
+						<h:outputText value="#{professor.id}" />
+					</p:column>
+
+					<p:column headerText="Nome" width="250">
+						<h:outputText value="#{professor.nome}" />
+					</p:column>
+
+					<p:column headerText="Matricula" width="100">
+						<h:outputText value="#{professor.matricula}" />
+					</p:column>
+
+					<p:column headerText="Academia" width="">
+						<h:outputText value="#{professor.academia.nome}" />
+					</p:column>
+
+				</p:dataTable>
+			</center>
+		</h:form>
+		<center>
+			<p:commandButton value="Cadastrar" icon="ui-icon-document"
+				update=":fprofessor:displayCadastro" oncomplete="cadastro.show()" />
+
+			<p:commandButton value="Alterar" icon="ui-icon-search"
+				oncomplete="altera.show()" update=":fprofessorA:displayaltera" />
+
+			<p:commandButton value="Deletar" icon="ui-icon-disk"
+				oncomplete="deleta.show()" update=":displaydeleta" />
+
+
+
+		</center>
+	</p:fieldset>
+
+	<p:growl id="menssagem" showDetail="true" life="3000" for="msg" />
+
+	<!--............................................................................DIALOGOS E FUNÇÕES-->
+	<!--CADASTRO Professor-->
+	<p:dialog id="dialogCadastro" header="Cadastro de Professor"
+		widgetVar="cadastro" resizable="false" width="500" showEffect="clip"
+		hideEffect="explode">
+		<h:form id="fprofessor">
+			<h:panelGrid id="displayCadastro" border='1' columns="2"
+				styleClass="panelGrid" rowClasses="panelFirstLine,panelNextLine">
+				<h:outputLabel value="Codigo" />
+				<p:inputText value="#{professorPrime.professor.id}"
+					style=" width : 125px;" />
+
+				<h:outputLabel value="Nome" />
+				<p:inputText value="#{professorPrime.professor.nome}"
+					style=" width : 225px;" />
+
+				<h:outputLabel value="Matricula" />
+				<p:inputText value="#{professorPrime.professor.matricula}"
+					style=" width : 225px;" />
+
+				<h:outputLabel value="Academia" />
+				<p:selectOneMenu id="academia"
+					value="#{professorPrime.professor.academia}"
+					converter="entityConverter" effect="fade" var="i" filter="true" style="width:260px" panelStyle="width:250px"
+					filterMatchMode="startsWith">
+					<f:selectItem itemValue="" itemLabel="Selecione Academia" />
+					<f:selectItems value="#{professorPrime.allAcademia}" var="academia"
+						itemLabel="#{academia.nome}" itemValue="#{academia}" />
+						<p:column>
+						   #{i.id} - #{i.nome}
+						</p:column>
+				</p:selectOneMenu>
+
+				<p:commandButton value="Cadastrar" icon="ui-icon-search"
+					action="#{professorPrime.salva()}"
+					update=":form:tabela,:menssagem" />
+
+			</h:panelGrid>
+			<br />
+		</h:form>
+	</p:dialog>
+	<script type="text/javascript">
+           function camposObrigatorios() {
+               jQuery('#form2').effect("shake", { times:3 }, 100);
+           }
+      </script>
+
+	<!-- Altera -->
+
+	<p:dialog id="dialogaltera" header="Altera" widgetVar="altera"
+		resizable="false" width="500" showEffect="clip" hideEffect="explode">
+		<h:form id="fprofessorA">
+			<h:panelGrid id="displayaltera" border='1' columns="2"
+				styleClass="panelGrid" rowClasses="panelFirstLine,panelNextLine">
+				<h:outputLabel value="Codigo" />
+				<p:outputLabel value="#{professorPrime.professorSelecionado.id}"
+					style=" width : 325px;" />
+
+				<h:outputLabel value="Nome" />
+				<p:inputText value="#{professorPrime.professorSelecionado.nome}"
+					style=" width : 325px;" />
+
+				<h:outputLabel value="Matricula" />
+				<p:inputText value="#{professorPrime.professorSelecionado.matricula}"
+					style=" width : 325px;" />
+					
+			    <h:outputLabel value="Academia" />
+				<p:selectOneMenu id="academia"
+					value="#{professorPrime.professor.academia}"
+					converter="entityConverter" effect="fade" var="i" filter="true" style="width:260px" panelStyle="width:250px"
+					filterMatchMode="startsWith">
+					<f:selectItem itemValue="" itemLabel="Selecione Academia" />
+					<f:selectItems value="#{professorPrime.allAcademia}" var="academia"
+						itemLabel="#{academia.nome}" itemValue="#{academia}" />
+						<p:column>
+						   #{i.id} - #{i.nome}
+						</p:column>
+				</p:selectOneMenu> 		
+
+
+				<p:commandButton value="Alterar" icon="ui-icon-search"
+					action="#{professorPrime.update()}"
+					update=":form:tabela,:menssagem" />
+
+
+
+
+			</h:panelGrid>
+			<br />
+		</h:form>
+	</p:dialog>
+
+
+
+	<!--DELEÇÂO DE CONTATO-->
+	<p:dialog id="dialogDeleta" header="Deletar Professor" widgetVar="deleta"
+		width="500" showEffect="clip" hideEffect="fold">
+		<h:panelGrid id="displaydeleta" columns="2" cellpadding="4">
+			<h:outputText value="Deseja exluir realmente o Professor?" />
+			<br />
+			<p:commandButton value="Sim" action="#{professorPrime.delete()}"
+				update=":form:tabela,:menssagem" />
+			<p:commandButton value="Não" oncomplete="deleta.hide()"
+				update=":form:tabela,:menssagem" />
+		</h:panelGrid>
+	</p:dialog>
+
+
+</h:body>
+</html>

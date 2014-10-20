@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+
+<h:head>
+	<title>Gerenciador de Alunos</title>
+	<link type="text/css" rel="stylesheet" href="dot-luv/skin.css" />
+</h:head>
+<h:body>
+
+	<p:fieldset legend="Gerenciar Aluno" toggleable="true"
+		toggleSpeed="500">
+		<h:form id="form">
+			<center>
+				<p:dataTable id="tabela" var="aluno"
+					value="#{alunoPrime.allAluno}" rowKey="#{aluno.id}"
+					selectionMode="single" scrollable="true" scrollHeight="300"
+					scrollWidth="1195" selection="#{alunoPrime.alunoSelecionado}">
+					<p:column headerText="Codigo" width="100">
+						<h:outputText value="#{aluno.id}" />
+					</p:column>
+
+					<p:column headerText="Nome" width="250">
+						<h:outputText value="#{aluno.nome}" />
+					</p:column>
+
+					<p:column headerText="Matricula" width="100">
+						<h:outputText value="#{aluno.matricula}" />
+					</p:column>
+
+					<p:column headerText="Sexo" width="100">
+						<h:outputText value="#{aluno.sexo}" />
+					</p:column>
+
+					<p:column headerText="Academia" width="350">
+						<h:outputText value="#{aluno.academia.nome}" />
+					</p:column>
+
+				</p:dataTable>
+			</center>
+		</h:form>
+		<center>
+			<p:commandButton value="Cadastrar" icon="ui-icon-document"
+				update=":faluno:displayCadastro" oncomplete="cadastro.show()" />
+
+			<p:commandButton value="Alterar" icon="ui-icon-search"
+				oncomplete="altera.show()" update=":falunoA:displayaltera" />
+
+			<p:commandButton value="Deletar" icon="ui-icon-disk"
+				oncomplete="deleta.show()" update=":displaydeleta" />
+
+
+
+		</center>
+	</p:fieldset>
+
+	<p:growl id="menssagem" showDetail="true" life="3000" for="msg" />
+
+	<!--............................................................................DIALOGOS E FUNÇÕES-->
+	<!--CADASTRO Aluno-->
+	<p:dialog id="dialogCadastro" header="Cadastro de Aluno"
+		widgetVar="cadastro" resizable="false" width="500" showEffect="clip"
+		hideEffect="explode">
+		<h:form id="faluno">
+			<h:panelGrid id="displayCadastro" border='1' columns="2"
+				styleClass="panelGrid" rowClasses="panelFirstLine,panelNextLine">
+				<h:outputLabel value="Codigo" />
+				<p:inputText value="#{alunoPrime.aluno.id}"
+					style=" width : 125px;" />
+
+				<h:outputLabel value="Nome" />
+				<p:inputText value="#{alunoPrime.aluno.nome}"
+					style=" width : 225px;" />
+
+				<h:outputLabel value="Matricula" />
+				<p:inputText value="#{alunoPrime.aluno.matricula}"
+					style=" width : 225px;" />
+
+				<h:outputLabel value="Sexo" />
+				<p:inputText value="#{alunoPrime.aluno.sexo}"
+					style=" width : 225px;" />
+
+				<h:outputLabel value="Academia" />
+				<p:selectOneMenu id="academia"
+					value="#{alunoPrime.aluno.academia}"
+					converter="entityConverter" effect="fade" var="i" filter="true" style="width:260px" panelStyle="width:250px"
+					filterMatchMode="startsWith">
+					<f:selectItem itemValue="" itemLabel="Selecione Academia" />
+					<f:selectItems value="#{alunoPrime.allAcademia}" var="academia"
+						itemLabel="#{academia.nome}" itemValue="#{academia}" />
+						<p:column>
+						   #{i.id} - #{i.nome}
+						</p:column>
+				</p:selectOneMenu>
+
+				<p:commandButton value="Cadastrar" icon="ui-icon-search"
+					action="#{alunoPrime.salva()}"
+					update=":form:tabela,:menssagem" />
+
+			</h:panelGrid>
+			<br />
+		</h:form>
+	</p:dialog>
+	<script type="text/javascript">
+           function camposObrigatorios() {
+               jQuery('#form2').effect("shake", { times:3 }, 100);
+           }
+      </script>
+
+	<!-- Altera -->
+
+	<p:dialog id="dialogaltera" header="Altera" widgetVar="altera"
+		resizable="false" width="500" showEffect="clip" hideEffect="explode">
+		<h:form id="falunoA">
+			<h:panelGrid id="displayaltera" border='1' columns="2"
+				styleClass="panelGrid" rowClasses="panelFirstLine,panelNextLine">
+				<h:outputLabel value="Codigo" />
+				<p:outputLabel value="#{alunoPrime.alunoSelecionado.id}"
+					style=" width : 325px;" />
+
+				<h:outputLabel value="Nome" />
+				<p:inputText value="#{alunoPrime.alunoSelecionado.nome}"
+					style=" width : 325px;" />
+
+				<h:outputLabel value="Matricula" />
+				<p:inputText value="#{alunoPrime.alunoSelecionado.matricula}"
+					style=" width : 325px;" />
+
+				<h:outputLabel value="Sexo" />
+				<p:inputText value="#{alunoPrime.alunoSelecionado.sexo}"
+					style=" width : 325px;" />
+					
+			    <h:outputLabel value="Academia" />
+				<p:selectOneMenu id="academia"
+					value="#{alunoPrime.aluno.academia}"
+					converter="entityConverter" effect="fade" var="i" filter="true" style="width:260px" panelStyle="width:250px"
+					filterMatchMode="startsWith">
+					<f:selectItem itemValue="" itemLabel="Selecione Academia" />
+					<f:selectItems value="#{alunoPrime.allAcademia}" var="academia"
+						itemLabel="#{academia.nome}" itemValue="#{academia}" />
+						<p:column>
+						   #{i.id} - #{i.nome}
+						</p:column>
+				</p:selectOneMenu> 		
+
+
+				<p:commandButton value="Alterar" icon="ui-icon-search"
+					action="#{alunoPrime.update()}"
+					update=":form:tabela,:menssagem" />
+
+
+
+
+			</h:panelGrid>
+			<br />
+		</h:form>
+	</p:dialog>
+
+
+
+	<!--DELEÇÂO DE CONTATO-->
+	<p:dialog id="dialogDeleta" header="Deletar Aluno" widgetVar="deleta"
+		width="500" showEffect="clip" hideEffect="fold">
+		<h:panelGrid id="displaydeleta" columns="2" cellpadding="4">
+			<h:outputText value="Deseja exluir realmente o Aluno?" />
+			<br />
+			<p:commandButton value="Sim" action="#{alunoPrime.delete()}"
+				update=":form:tabela,:menssagem" />
+			<p:commandButton value="Não" oncomplete="deleta.hide()"
+				update=":form:tabela,:menssagem" />
+		</h:panelGrid>
+	</p:dialog>
+
+
+</h:body>
+</html>

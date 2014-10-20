@@ -1,0 +1,247 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+
+<h:head>
+	<title>Gerenciador de Perimetros</title>
+	<link type="text/css" rel="stylesheet" href="dot-luv/skin.css" />
+</h:head>
+<h:body>
+
+	<p:fieldset legend="Gerenciar Perimetro" toggleable="true"
+		toggleSpeed="500">
+		<h:form id="form">
+			<center>
+				<p:dataTable id="tabela" var="perimetro"
+					value="#{perimetroPrime.allPerimetro}" rowKey="#{perimetro.id}"
+					selectionMode="single" scrollable="true" scrollHeight="300"
+					scrollWidth="850" selection="#{perimetroPrime.perimetroSelecionado}">
+					<p:column headerText="Codigo" width="150">
+						<h:outputText value="#{perimetro.id}" />
+					</p:column>
+
+					<p:column headerText="Torax" width="150">
+						<h:outputText value="#{perimetro.torax}" />
+					</p:column>
+
+					<p:column headerText="Cintura" width="150">
+						<h:outputText value="#{perimetro.cintura}" />
+					</p:column>
+
+					<p:column headerText="Abdomen" width="150">
+						<h:outputText value="#{perimetro.abdomen}" />
+					</p:column>
+
+					<p:column headerText="Antebraço D" width="150">
+						<h:outputText value="#{perimetro.antebracoDireito}" />
+					</p:column>
+
+					<p:column headerText="Antebraço E" width="150">
+						<h:outputText value="#{perimetro.antebracoEsquerdo}" />
+					</p:column>
+
+					<p:column headerText="Braço D" width="150">
+						<h:outputText value="#{perimetro.bracoDireito}" />
+					</p:column>
+
+					<p:column headerText="Braço E" width="150">
+						<h:outputText value="#{perimetro.bracoEsquerdo}" />
+					</p:column>
+
+					<p:column headerText="Coxa D" width="150">
+						<h:outputText value="#{perimetro.coxaDireita}" />
+					</p:column>
+
+					<p:column headerText="Coxa E" width="150">
+						<h:outputText value="#{perimetro.coxaEsquerda}" />
+					</p:column>
+
+					<p:column headerText="Panturrilha D" width="150">
+						<h:outputText value="#{perimetro.panturrilhaDireita}" />
+					</p:column>
+
+					<p:column headerText="Panturrilha E" width="150">
+						<h:outputText value="#{perimetro.panturrilhaEsquerda}" />
+					</p:column>
+
+
+				</p:dataTable>
+			</center>
+		</h:form>
+		<center>
+			<p:commandButton value="Cadastrar" icon="ui-icon-document"
+				update=":fperimetro:displayCadastro" oncomplete="cadastro.show()" />
+
+			<p:commandButton value="Alterar" icon="ui-icon-search"
+				oncomplete="altera.show()" update=":fperimetroA:displayaltera" />
+
+			<p:commandButton value="Deletar" icon="ui-icon-disk"
+				oncomplete="deleta.show()" update=":displaydeleta" />
+
+
+
+		</center>
+	</p:fieldset>
+
+	<p:growl id="menssagem" showDetail="true" life="3000" for="msg" />
+
+	<!--............................................................................DIALOGOS E FUNÇÕES-->
+	<!--CADASTRO Perimetro-->
+	<p:dialog id="dialogCadastro" header="Cadastro de Perimetro"
+		widgetVar="cadastro" resizable="false" width="500" showEffect="clip"
+		hideEffect="explode">
+		<h:form id="fperimetro">
+			<h:panelGrid id="displayCadastro" border='1' columns="2"
+				styleClass="panelGrid" rowClasses="panelFirstLine,panelNextLine">
+				<h:outputLabel value="Codigo" />
+				<p:inputText value="#{perimetroPrime.perimetro.id}"
+					style=" width : 125px;" />
+
+				<h:outputLabel value="Torax" />
+				<p:inputText value="#{perimetroPrime.perimetro.torax}"
+					style=" width : 125px;" />
+
+				<h:outputLabel value="Cintura" />
+				<p:inputText value="#{perimetroPrime.perimetro.cintura}"
+					style=" width : 125px;" />
+
+				<h:outputLabel value="Abdomen" />
+				<p:inputText value="#{perimetroPrime.perimetro.abdomen}"
+					style=" width : 125px;" />
+
+				<h:outputLabel value="Antebraço D" />
+				<p:inputText value="#{perimetroPrime.perimetro.antebracoDireito}"
+					style=" width : 125px;" />
+
+				<h:outputLabel value="Antebraço E" />
+				<p:inputText value="#{perimetroPrime.perimetro.antebracoEsquerdo}"
+					style=" width : 125px;" />
+
+				<h:outputLabel value="Braço D" />
+				<p:inputText value="#{perimetroPrime.perimetro.bracoDireito}"
+					style=" width : 125px;" />
+
+				<h:outputLabel value="Braço E" />
+				<p:inputText value="#{perimetroPrime.perimetro.bracoEsquerdo}"
+					style=" width : 125px;" />
+
+				<h:outputLabel value="Coxa D" />
+				<p:inputText value="#{perimetroPrime.perimetro.coxaDireita}"
+					style=" width : 125px;" />
+
+				<h:outputLabel value="Coxa E" />
+				<p:inputText value="#{perimetroPrime.perimetro.coxaEsquerda}"
+					style=" width : 125px;" />
+
+				<h:outputLabel value="Panturrilha D" />
+				<p:inputText value="#{perimetroPrime.perimetro.panturrilhaDireita}"
+					style=" width : 125px;" />
+
+				<h:outputLabel value="Panturrilha E" />
+				<p:inputText value="#{perimetroPrime.perimetro.panturrilhaEsquerda}"
+					style=" width : 125px;" />
+
+
+				<p:commandButton value="Cadastrar" icon="ui-icon-search"
+					action="#{perimetroPrime.salva()}"
+					update=":form:tabela,:menssagem" />
+
+			</h:panelGrid>
+			<br />
+		</h:form>
+	</p:dialog>
+	<script type="text/javascript">
+           function camposObrigatorios() {
+               jQuery('#form2').effect("shake", { times:3 }, 100);
+           }
+      </script>
+
+	<!-- Altera -->
+
+	<p:dialog id="dialogaltera" header="Altera" widgetVar="altera"
+		resizable="false" width="500" showEffect="clip" hideEffect="explode">
+		<h:form id="fperimetroA">
+			<h:panelGrid id="displayaltera" border='1' columns="2"
+				styleClass="panelGrid" rowClasses="panelFirstLine,panelNextLine">
+				<h:outputLabel value="Codigo" />
+				<p:outputLabel value="#{perimetroPrime.perimetroSelecionado.id}"
+					style=" width : 325px;" />
+
+				<h:outputLabel value="Torax" />
+				<p:inputText value="#{perimetroPrime.perimetroSelecionado.torax}"
+					style=" width : 125px;" />
+
+				<h:outputLabel value="Cintura" />
+				<p:inputText value="#{perimetroPrime.perimetroSelecionado.cintura}"
+					style=" width : 125px;" />
+
+				<h:outputLabel value="Abdomen" />
+				<p:inputText value="#{perimetroPrime.perimetroSelecionado.abdomen}"
+					style=" width : 125px;" />
+
+				<h:outputLabel value="Antebraço D" />
+				<p:inputText value="#{perimetroPrime.perimetroSelecionado.antebracoDireito}"
+					style=" width : 125px;" />
+
+				<h:outputLabel value="Antebraço E" />
+				<p:inputText value="#{perimetroPrime.perimetroSelecionado.antebracoEsquerdo}"
+					style=" width : 125px;" />
+
+				<h:outputLabel value="Braço D" />
+				<p:inputText value="#{perimetroPrime.perimetroSelecionado.bracoDireito}"
+					style=" width : 125px;" />
+
+				<h:outputLabel value="Braço E" />
+				<p:inputText value="#{perimetroPrime.perimetroSelecionado.bracoEsquerdo}"
+					style=" width : 125px;" />
+
+				<h:outputLabel value="Coxa D" />
+				<p:inputText value="#{perimetroPrime.perimetroSelecionado.coxaDireita}"
+					style=" width : 125px;" />
+
+				<h:outputLabel value="Coxa E" />
+				<p:inputText value="#{perimetroPrime.perimetroSelecionado.coxaEsquerda}"
+					style=" width : 125px;" />
+
+				<h:outputLabel value="Panturrilha D" />
+				<p:inputText value="#{perimetroPrime.perimetroSelecionado.panturrilhaDireita}"
+					style=" width : 125px;" />
+
+				<h:outputLabel value="Panturrilha E" />
+				<p:inputText value="#{perimetroPrime.perimetroSelecionado.panturrilhaEsquerda}"
+					style=" width : 125px;" />
+
+					
+
+				<p:commandButton value="Alterar" icon="ui-icon-search"
+					action="#{perimetroPrime.update()}"
+					update=":form:tabela,:menssagem" />
+
+
+			</h:panelGrid>
+			<br />
+		</h:form>
+	</p:dialog>
+
+
+
+	<!--DELEÇÂO DE CONTATO-->
+	<p:dialog id="dialogDeleta" header="Deletar Perimetro" widgetVar="deleta"
+		width="500" showEffect="clip" hideEffect="fold">
+		<h:panelGrid id="displaydeleta" columns="2" cellpadding="4">
+			<h:outputText value="Deseja exluir realmente o Perimetro?" />
+			<br />
+			<p:commandButton value="Sim" action="#{perimetroPrime.delete()}"
+				update=":form:tabela,:menssagem" />
+			<p:commandButton value="Não" oncomplete="deleta.hide()"
+				update=":form:tabela,:menssagem" />
+		</h:panelGrid>
+	</p:dialog>
+
+
+</h:body>
+</html>
