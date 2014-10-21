@@ -80,9 +80,9 @@
 				<p:inputText value="#{avaliacaoFisicaPrime.avaliacaoFisica.id}"
 					style=" width : 125px;" />
 
-				<h:outputLabel value="Data" />
-				<p:inputText value="#{avaliacaoFisicaPrime.avaliacaoFisica.data}"
-					style=" width : 225px;" />
+					
+				<h:outputLabel value="Data:" />
+        		<p:calendar value="#{avaliacaoFisicaPrime.avaliacaoFisica.data}" pattern="dd-MM-yyyy" mask="true" />
 
 				<h:outputLabel value="Observações" />
 				<p:inputText value="#{avaliacaoFisicaPrime.avaliacaoFisica.observacoes}"
@@ -165,10 +165,12 @@
 				<p:outputLabel value="#{avaliacaoFisicaPrime.avaliacaoFisicaSelecionado.id}"
 					style=" width : 325px;" />
 
+				<h:outputLabel value="Data:" />
+        		<p:calendar value="#{avaliacaoFisicaPrime.avaliacaoFisicaSelecionado.data}" pattern="dd-MM-yyyy" mask="true" />
 					
 			    <h:outputLabel value="Aluno" />
 				<p:selectOneMenu id="aluno"
-					value="#{avaliacaoFisicaPrime.avaliacaoFisica.aluno}"
+					value="#{avaliacaoFisicaPrime.avaliacaoFisicaSelecionado.aluno}"
 					converter="entityConverter" effect="fade" var="i" filter="true" style="width:260px" panelStyle="width:250px"
 					filterMatchMode="startsWith">
 					<f:selectItem itemValue="" itemLabel="Selecione Aluno" />
@@ -181,7 +183,7 @@
 
 				<h:outputLabel value="Professor" />
 				<p:selectOneMenu id="professor"
-					value="#{avaliacaoFisicaPrime.avaliacaoFisica.professor}"
+					value="#{avaliacaoFisicaPrime.avaliacaoFisicaSelecionado.professor}"
 					converter="entityConverter" effect="fade" var="i" filter="true" style="width:260px" panelStyle="width:250px"
 					filterMatchMode="startsWith">
 					<f:selectItem itemValue="" itemLabel="Selecione Professor" />
@@ -194,7 +196,7 @@
 
 				<h:outputLabel value="Perimetro" />
 				<p:selectOneMenu id="perimetro"
-					value="#{avaliacaoFisicaPrime.avaliacaoFisica.perimetro}"
+					value="#{avaliacaoFisicaPrime.avaliacaoFisicaSelecionado.perimetro}"
 					converter="entityConverter" effect="fade" var="i" filter="true" style="width:260px" panelStyle="width:250px"
 					filterMatchMode="startsWith">
 					<f:selectItem itemValue="" itemLabel="Selecione Perimetro" />
@@ -207,7 +209,7 @@
 
 				<h:outputLabel value="Composição Corporal" />
 				<p:selectOneMenu id="composicaoCorporal"
-					value="#{avaliacaoFisicaPrime.avaliacaoFisica.composicaoCorporal}"
+					value="#{avaliacaoFisicaPrime.avaliacaoFisicaSelecionado.composicaoCorporal}"
 					converter="entityConverter" effect="fade" var="i" filter="true" style="width:260px" panelStyle="width:250px"
 					filterMatchMode="startsWith">
 					<f:selectItem itemValue="" itemLabel="Selecione ComposicaoCorporal" />

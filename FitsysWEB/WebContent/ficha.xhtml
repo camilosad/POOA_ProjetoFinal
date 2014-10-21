@@ -113,15 +113,14 @@
 				<h:outputLabel value="Objetivo" />
 				<p:inputText value="#{fichaPrime.ficha.objetivo}"
 					style=" width : 325px;" />
+					
+				<h:outputLabel value="Data de Criação:" />
+        		<p:calendar value="#{fichaPrime.ficha.dataCriacao}" pattern="dd-MM-yyyy" mask="true" />
 
-				<h:outputLabel value="Data_criação" />
-				<p:inputText value="#{fichaPrime.ficha.dataCriacao}"
-					style=" width : 325px;" />
-
-				<h:outputLabel value="Data_validade" />
-				<p:inputText value="#{fichaPrime.ficha.dataValidade}"
-					style=" width : 325px;" />
-
+				<h:outputLabel value="Data de Validade:" />
+        		<p:calendar value="#{fichaPrime.ficha.dataValidade}" pattern="dd-MM-yyyy" mask="true" />
+				
+				
 				<p:commandButton value="Cadastrar" icon="ui-icon-search"
 					action="#{fichaPrime.salva()}"
 					update=":form:tabela,:menssagem" />
@@ -178,13 +177,11 @@
 				<p:inputText value="#{fichaPrime.fichaSelecionado.diaDaSemana}"
 					style=" width : 325px;" />
 
-				<h:outputLabel value="Data_criacao" />
-				<p:inputText value="#{fichaPrime.fichaSelecionado.dataCriacao}"
-					style=" width : 325px;" />
+				<h:outputLabel value="Data:" />
+        		<p:calendar value="#{fichaPrime.fichaSelecionado.dataCriacao}" pattern="dd-MM-yyyy" mask="true" />
 
-				<h:outputLabel value="Data_validade" />
-				<p:inputText value="#{fichaPrime.fichaSelecionado.dataValidade}"
-					style=" width : 325px;" />
+				<h:outputLabel value="Data:" />
+        		<p:calendar value="#{fichaPrime.fichaSelecionado.dataValidade}" pattern="dd-MM-yyyy" mask="true" />
 
 
 				<p:commandButton value="Alterar" icon="ui-icon-search"
